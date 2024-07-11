@@ -1,6 +1,6 @@
 module github.com/ertan/go-farcaster
 
-go 1.19
+go 1.22.5
 
 require github.com/ethereum/go-ethereum v1.10.26
 
@@ -40,8 +40,10 @@ require (
 	github.com/shirou/gopsutil v3.21.4-0.20210419000835-c7a38de76ee5+incompatible // indirect
 	github.com/tklauser/go-sysconf v0.3.5 // indirect
 	github.com/tklauser/numcpus v0.2.2 // indirect
-	github.com/tyler-smith/go-bip32 v1.0.0
 	golang.org/x/crypto v0.0.0-20220525230936-793ad666bf5e // indirect
-	golang.org/x/sys v0.0.0-20220908164124-27713097b956 // indirect
+	golang.org/x/sys v0.22.0 // indirect
 	gopkg.in/natefinch/npipe.v2 v2.0.0-20160621034901-c1b8fa8bdcce // indirect
 )
+
+replace github.com/btcsuite/btcd/btcec/v2 => github.com/mleku/btcec v1.0.1
+replace github.com/decred/dcrd/dcrec/secp256k1/v4 => github.com/mleku/btcec v1.0.1
