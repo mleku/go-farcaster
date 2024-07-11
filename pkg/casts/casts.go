@@ -5,9 +5,9 @@ import (
 	"errors"
 	"strconv"
 
-	"github.com/ertan/go-farcaster/pkg/account"
-	"github.com/ertan/go-farcaster/pkg/registry"
-	"github.com/ertan/go-farcaster/pkg/users"
+	"github.com/mleku/go-farcaster/pkg/account"
+	"github.com/mleku/go-farcaster/pkg/registry"
+	"github.com/mleku/go-farcaster/pkg/users"
 )
 
 type CastService struct {
@@ -73,7 +73,8 @@ type CastsResponse struct {
 	} `json:"errors"`
 }
 
-func NewCastService(account *account.AccountService, registry *registry.RegistryService) *CastService {
+func NewCastService(account *account.AccountService,
+	registry *registry.RegistryService) *CastService {
 	return &CastService{
 		account:  account,
 		registry: registry,
@@ -107,7 +108,8 @@ func (c *CastService) GetCastByHash(hash string) (*Cast, error) {
 	return nil, errors.New("Error fetching cast")
 }
 
-func (c *CastService) GetCastsByFid(fid uint64, limit int, cursor string) ([]Cast, string, error) {
+func (c *CastService) GetCastsByFid(fid uint64, limit int,
+	cursor string) ([]Cast, string, error) {
 	params := map[string]interface{}{
 		"fid": fid,
 	}
@@ -132,7 +134,8 @@ func (c *CastService) GetCastsByFid(fid uint64, limit int, cursor string) ([]Cas
 	return nil, "", errors.New("Error fetching casts")
 }
 
-func (c *CastService) GetCastsByFname(fname string, limit int, cursor string) ([]Cast, string, error) {
+func (c *CastService) GetCastsByFname(fname string, limit int,
+	cursor string) ([]Cast, string, error) {
 	if c.registry == nil {
 		return nil, "", errors.New("Registry service is not initialized. Use GetCastsByFid.")
 	}
@@ -143,7 +146,8 @@ func (c *CastService) GetCastsByFname(fname string, limit int, cursor string) ([
 	return c.GetCastsByFid(fid, limit, cursor)
 }
 
-func (c *CastService) GetCastsByAddress(address string, limit int, cursor string) ([]Cast, string, error) {
+func (c *CastService) GetCastsByAddress(address string, limit int,
+	cursor string) ([]Cast, string, error) {
 	if c.registry == nil {
 		return nil, "", errors.New("Registry service is not initialized. Use GetCastsByFid.")
 	}
@@ -158,7 +162,8 @@ func (c *CastService) GetCastsInThread(threadHash string) ([]Cast, error) {
 	params := map[string]interface{}{
 		"threadHash": threadHash,
 	}
-	responseBytes, err := c.account.SendRequest("GET", "/v2/all-casts-in-thread", params, nil)
+	responseBytes, err := c.account.SendRequest("GET",
+		"/v2/all-casts-in-thread", params, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -182,7 +187,8 @@ func (c *CastService) publishCast(request []byte) (*Cast, error) {
 			Message string `json:"message"`
 		} `json:"errors"`
 	}
-	responseBytes, err := c.account.SendRequest("POST", "/v2/casts", nil, request)
+	responseBytes, err := c.account.SendRequest("POST", "/v2/casts", nil,
+		request)
 	if err != nil {
 		return nil, err
 	}
@@ -212,7 +218,8 @@ func (c *CastService) PublishCast(text string) (*Cast, error) {
 	return c.publishCast(requestBytes)
 }
 
-func (c *CastService) PublishReplyCast(text string, fid uint64, hash string) (*Cast, error) {
+func (c *CastService) PublishReplyCast(text string, fid uint64,
+	hash string) (*Cast, error) {
 	type Parent struct {
 		Fid  uint64 `json:"fid"`
 		Hash string `json:"hash"`
@@ -251,7 +258,8 @@ func (c *CastService) DeleteCast(castHash string) error {
 	if err != nil {
 		return err
 	}
-	responseBytes, err := c.account.SendRequest("DELETE", "/v2/casts", nil, requestBytes)
+	responseBytes, err := c.account.SendRequest("DELETE", "/v2/casts", nil,
+		requestBytes)
 	if err != nil {
 		return err
 	}
@@ -271,7 +279,8 @@ func (c *CastService) GetRecentCasts(limit int) ([]Cast, string, error) {
 	if limit > 0 {
 		params["limit"] = limit
 	}
-	responseBytes, err := c.account.SendRequest("GET", "/v2/recent-casts", params, nil)
+	responseBytes, err := c.account.SendRequest("GET", "/v2/recent-casts",
+		params, nil)
 	if err != nil {
 		return nil, "", err
 	}

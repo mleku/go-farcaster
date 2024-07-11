@@ -1,7 +1,7 @@
 package main
 
 import (
-	farcaster "github.com/ertan/go-farcaster/pkg"
+	farcaster "github.com/mleku/go-farcaster/pkg"
 	"github.com/spf13/viper"
 )
 

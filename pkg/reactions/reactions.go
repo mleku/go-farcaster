@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"errors"
 
-	"github.com/ertan/go-farcaster/pkg/account"
-	"github.com/ertan/go-farcaster/pkg/users"
+	"github.com/mleku/go-farcaster/pkg/account"
+	"github.com/mleku/go-farcaster/pkg/users"
 )
 
 type ReactionService struct {
@@ -26,7 +26,8 @@ func NewReactionService(account *account.AccountService) *ReactionService {
 	}
 }
 
-func (r *ReactionService) GetReactionsByCastHash(hash string, limit int, cursor string) ([]Reaction, string, error) {
+func (r *ReactionService) GetReactionsByCastHash(hash string, limit int,
+	cursor string) ([]Reaction, string, error) {
 	type ReactionsResponse struct {
 		Result struct {
 			// This is called `likes` not `reactions` in the API
@@ -48,7 +49,8 @@ func (r *ReactionService) GetReactionsByCastHash(hash string, limit int, cursor 
 	if cursor != "" {
 		params["cursor"] = cursor
 	}
-	responseBytes, err := r.account.SendRequest("GET", "/v2/cast-likes", params, nil)
+	responseBytes, err := r.account.SendRequest("GET", "/v2/cast-likes", params,
+		nil)
 	if err != nil {
 		return nil, "", err
 	}
@@ -83,7 +85,8 @@ func (r *ReactionService) ReactToCast(hash string) (*Reaction, error) {
 	if err != nil {
 		return nil, err
 	}
-	responseBytes, err := r.account.SendRequest("PUT", "/v2/cast-likes", nil, requestBytes)
+	responseBytes, err := r.account.SendRequest("PUT", "/v2/cast-likes", nil,
+		requestBytes)
 	if err != nil {
 		return nil, err
 	}
@@ -114,7 +117,8 @@ func (r *ReactionService) UnreactToCast(hash string) error {
 	if err != nil {
 		return err
 	}
-	responseBytes, err := r.account.SendRequest("DELETE", "/v2/cast-likes", nil, requestBytes)
+	responseBytes, err := r.account.SendRequest("DELETE", "/v2/cast-likes", nil,
+		requestBytes)
 	if err != nil {
 		return err
 	}
@@ -127,7 +131,8 @@ func (r *ReactionService) UnreactToCast(hash string) error {
 	return errors.New("Error unreacting to cast")
 }
 
-func (r *ReactionService) GetRecastersByCastHash(hash string, limit int, cursor string) ([]users.User, string, error) {
+func (r *ReactionService) GetRecastersByCastHash(hash string, limit int,
+	cursor string) ([]users.User, string, error) {
 	type RecastersResponse struct {
 		Result struct {
 			Recasters []users.User `json:"users"`
@@ -148,7 +153,8 @@ func (r *ReactionService) GetRecastersByCastHash(hash string, limit int, cursor 
 	if cursor != "" {
 		params["cursor"] = cursor
 	}
-	responseBytes, err := r.account.SendRequest("GET", "/v2/cast-recasters", params, nil)
+	responseBytes, err := r.account.SendRequest("GET", "/v2/cast-recasters",
+		params, nil)
 	if err != nil {
 		return nil, "", err
 	}
@@ -182,7 +188,8 @@ func (r *ReactionService) RecastCast(hash string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	responseBytes, err := r.account.SendRequest("PUT", "/v2/recasts", nil, requestBytes)
+	responseBytes, err := r.account.SendRequest("PUT", "/v2/recasts", nil,
+		requestBytes)
 	if err != nil {
 		return "", err
 	}
@@ -213,7 +220,8 @@ func (r *ReactionService) UnrecastCast(hash string) error {
 	if err != nil {
 		return err
 	}
-	responseBytes, err := r.account.SendRequest("DELETE", "/v2/recasts", nil, requestBytes)
+	responseBytes, err := r.account.SendRequest("DELETE", "/v2/recasts", nil,
+		requestBytes)
 	if err != nil {
 		return err
 	}
@@ -226,7 +234,8 @@ func (r *ReactionService) UnrecastCast(hash string) error {
 	return errors.New("Error unrecasting cast")
 }
 
-func (r *ReactionService) GetUserReactions(fid uint64) ([]Reaction, string, error) {
+func (r *ReactionService) GetUserReactions(fid uint64) ([]Reaction, string,
+	error) {
 	type UserReactionsResponse struct {
 		Result struct {
 			Reactions []Reaction `json:"likes"`
@@ -241,7 +250,8 @@ func (r *ReactionService) GetUserReactions(fid uint64) ([]Reaction, string, erro
 	params := map[string]interface{}{
 		"fid": fid,
 	}
-	responseBytes, err := r.account.SendRequest("GET", "/v2/user-cast-likes", params, nil)
+	responseBytes, err := r.account.SendRequest("GET", "/v2/user-cast-likes",
+		params, nil)
 	if err != nil {
 		return nil, "", err
 	}

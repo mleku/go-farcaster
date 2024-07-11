@@ -4,9 +4,9 @@ import (
 	"encoding/json"
 	"errors"
 
-	"github.com/ertan/go-farcaster/pkg/account"
-	"github.com/ertan/go-farcaster/pkg/registry"
-	"github.com/ertan/go-farcaster/pkg/users"
+	"github.com/mleku/go-farcaster/pkg/account"
+	"github.com/mleku/go-farcaster/pkg/registry"
+	"github.com/mleku/go-farcaster/pkg/users"
 )
 
 type AssetService struct {
@@ -29,14 +29,16 @@ type Collection struct {
 	SchemaName   string `json:"schema_name,omitempty"`
 }
 
-func NewAssetService(account *account.AccountService, registry *registry.RegistryService) *AssetService {
+func NewAssetService(account *account.AccountService,
+	registry *registry.RegistryService) *AssetService {
 	return &AssetService{
 		account:  account,
 		registry: registry,
 	}
 }
 
-func (c *AssetService) GetCollectionOwners(collectionId string, limit int, cursor string) ([]users.User, string, error) {
+func (c *AssetService) GetCollectionOwners(collectionId string, limit int,
+	cursor string) ([]users.User, string, error) {
 	type CollectionOwnerResponse struct {
 		Result struct {
 			Users []users.User `json:"users"`
@@ -58,11 +60,13 @@ func (c *AssetService) GetCollectionOwners(collectionId string, limit int, curso
 		params["cursor"] = cursor
 	}
 	var collectionOwnerResponse CollectionOwnerResponse
-	responseBytes, err := c.account.SendRequest("GET", "/v2/collection-owners", params, nil)
+	responseBytes, err := c.account.SendRequest("GET", "/v2/collection-owners",
+		params, nil)
 	if err != nil {
 		return nil, "", err
 	}
-	if err := json.Unmarshal(responseBytes, &collectionOwnerResponse); err == nil {
+	if err := json.Unmarshal(responseBytes,
+		&collectionOwnerResponse); err == nil {
 		if len(collectionOwnerResponse.Errors) > 0 {
 			return nil, "", errors.New(collectionOwnerResponse.Errors[0].Message)
 		}
@@ -71,7 +75,8 @@ func (c *AssetService) GetCollectionOwners(collectionId string, limit int, curso
 	return nil, "", err
 }
 
-func (c *AssetService) GetCollectionsByOwnerFid(fid uint64, limit int, cursor string) ([]Collection, string, error) {
+func (c *AssetService) GetCollectionsByOwnerFid(fid uint64, limit int,
+	cursor string) ([]Collection, string, error) {
 	params := map[string]interface{}{
 		"ownerFid": fid,
 	}
@@ -92,7 +97,8 @@ func (c *AssetService) GetCollectionsByOwnerFid(fid uint64, limit int, cursor st
 			Message string `json:"message"`
 		} `json:"errors"`
 	}
-	responseBytes, err := c.account.SendRequest("GET", "/v2/user-collections", params, nil)
+	responseBytes, err := c.account.SendRequest("GET", "/v2/user-collections",
+		params, nil)
 	if err != nil {
 		return nil, "", err
 	}
@@ -106,7 +112,8 @@ func (c *AssetService) GetCollectionsByOwnerFid(fid uint64, limit int, cursor st
 	return nil, "", err
 }
 
-func (c *AssetService) GetCollectionsByOwnerFname(fname string, limit int, cursor string) ([]Collection, string, error) {
+func (c *AssetService) GetCollectionsByOwnerFname(fname string, limit int,
+	cursor string) ([]Collection, string, error) {
 	if c.registry == nil {
 		return nil, "", errors.New("registry service is not initialized. Use GetCollectionsByOwnerFid instead")
 	}
@@ -117,7 +124,8 @@ func (c *AssetService) GetCollectionsByOwnerFname(fname string, limit int, curso
 	return c.GetCollectionsByOwnerFid(fid, limit, cursor)
 }
 
-func (c *AssetService) GetCollectionsByOwnerAddress(address string, limit int, cursor string) ([]Collection, string, error) {
+func (c *AssetService) GetCollectionsByOwnerAddress(address string, limit int,
+	cursor string) ([]Collection, string, error) {
 	if c.registry == nil {
 		return nil, "", errors.New("registry service is not initialized. Use GetCollectionsByOwnerFid instead")
 	}

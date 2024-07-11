@@ -1,6 +1,6 @@
 package health
 
-import "github.com/ertan/go-farcaster/pkg/account"
+import "github.com/mleku/go-farcaster/pkg/account"
 
 type HealthService struct {
 	account *account.AccountService

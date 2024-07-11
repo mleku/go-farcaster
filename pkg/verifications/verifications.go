@@ -4,9 +4,9 @@ import (
 	"encoding/json"
 	"errors"
 
-	"github.com/ertan/go-farcaster/pkg/account"
-	"github.com/ertan/go-farcaster/pkg/registry"
-	"github.com/ertan/go-farcaster/pkg/users"
+	"github.com/mleku/go-farcaster/pkg/account"
+	"github.com/mleku/go-farcaster/pkg/registry"
+	"github.com/mleku/go-farcaster/pkg/users"
 )
 
 type VerificationsService struct {
@@ -20,14 +20,16 @@ type Verification struct {
 	Timestamp uint64 `json:"timestamp"`
 }
 
-func NewVerificationsService(account *account.AccountService, registry *registry.RegistryService) *VerificationsService {
+func NewVerificationsService(account *account.AccountService,
+	registry *registry.RegistryService) *VerificationsService {
 	return &VerificationsService{
 		account:  account,
 		registry: registry,
 	}
 }
 
-func (v *VerificationsService) GetVerificationsByFid(fid int) ([]Verification, error) {
+func (v *VerificationsService) GetVerificationsByFid(fid int) ([]Verification,
+	error) {
 	type VerificationsResponse struct {
 		Result struct {
 			Verifications []Verification `json:"verifications"`
@@ -37,7 +39,8 @@ func (v *VerificationsService) GetVerificationsByFid(fid int) ([]Verification, e
 		"fid": fid,
 	}
 
-	responseBytes, err := v.account.SendRequest("GET", "/v2/verifications", params, nil)
+	responseBytes, err := v.account.SendRequest("GET", "/v2/verifications",
+		params, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -48,7 +51,8 @@ func (v *VerificationsService) GetVerificationsByFid(fid int) ([]Verification, e
 	return nil, errors.New("Error getting verifications")
 }
 
-func (v *VerificationsService) GetUserByVerification(address string) (*users.User, error) {
+func (v *VerificationsService) GetUserByVerification(address string) (*users.User,
+	error) {
 	type UserResponse struct {
 		Result struct {
 			User users.User `json:"user"`
@@ -58,7 +62,8 @@ func (v *VerificationsService) GetUserByVerification(address string) (*users.Use
 		"address": address,
 	}
 
-	responseBytes, err := v.account.SendRequest("GET", "/v2/user-by-verification", params, nil)
+	responseBytes, err := v.account.SendRequest("GET",
+		"/v2/user-by-verification", params, nil)
 	if err != nil {
 		return nil, err
 	}

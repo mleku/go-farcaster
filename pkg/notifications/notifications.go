@@ -4,9 +4,9 @@ import (
 	"encoding/json"
 	"errors"
 
-	"github.com/ertan/go-farcaster/pkg/account"
-	"github.com/ertan/go-farcaster/pkg/casts"
-	"github.com/ertan/go-farcaster/pkg/users"
+	"github.com/mleku/go-farcaster/pkg/account"
+	"github.com/mleku/go-farcaster/pkg/casts"
+	"github.com/mleku/go-farcaster/pkg/users"
 )
 
 type NotificationService struct {
@@ -32,7 +32,8 @@ func NewNotificationService(account *account.AccountService) *NotificationServic
 	}
 }
 
-func (n *NotificationService) GetNotifications(limit int, cursor string) ([]Notification, string, error) {
+func (n *NotificationService) GetNotifications(limit int,
+	cursor string) ([]Notification, string, error) {
 	type NotificationsResponse struct {
 		Result struct {
 			Notifications []Notification `json:"notifications"`
@@ -51,7 +52,8 @@ func (n *NotificationService) GetNotifications(limit int, cursor string) ([]Noti
 	if cursor != "" {
 		params["cursor"] = cursor
 	}
-	responseBytes, err := n.account.SendRequest("GET", "/v2/notifications", params, nil)
+	responseBytes, err := n.account.SendRequest("GET", "/v2/notifications",
+		params, nil)
 	if err != nil {
 		return nil, "", err
 	}

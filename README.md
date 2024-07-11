@@ -5,7 +5,7 @@ Inspired by [Rust](https://github.com/TheLDB/farcaster-rs) and [Python](https://
 
 ## Installation
 ```
-go get github.com/ertan/go-farcaster
+go get github.com/mleku/go-farcaster
 ```
 
 ## Usage

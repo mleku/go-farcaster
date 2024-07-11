@@ -4,9 +4,9 @@ import (
 	"encoding/json"
 	"errors"
 
-	"github.com/ertan/go-farcaster/pkg/account"
-	"github.com/ertan/go-farcaster/pkg/registry"
-	"github.com/ertan/go-farcaster/pkg/users"
+	"github.com/mleku/go-farcaster/pkg/account"
+	"github.com/mleku/go-farcaster/pkg/registry"
+	"github.com/mleku/go-farcaster/pkg/users"
 )
 
 type FollowService struct {
@@ -19,7 +19,8 @@ type Follow struct {
 	FollowingFid int64 `json:"following_fid"`
 }
 
-func NewFollowService(account *account.AccountService, registry *registry.RegistryService) *FollowService {
+func NewFollowService(account *account.AccountService,
+	registry *registry.RegistryService) *FollowService {
 	return &FollowService{
 		account:  account,
 		registry: registry,
@@ -42,7 +43,8 @@ func (f *FollowService) Follow(fid uint64) error {
 	if err != nil {
 		return err
 	}
-	responseBytes, err := f.account.SendRequest("PUT", "/v2/follows", nil, requestBytes)
+	responseBytes, err := f.account.SendRequest("PUT", "/v2/follows", nil,
+		requestBytes)
 	if err != nil {
 		return err
 	}
@@ -71,7 +73,8 @@ func (f *FollowService) Unfollow(fid uint64) error {
 	if err != nil {
 		return err
 	}
-	responseBytes, err := f.account.SendRequest("DELETE", "/v2/follows", nil, requestBytes)
+	responseBytes, err := f.account.SendRequest("DELETE", "/v2/follows", nil,
+		requestBytes)
 	if err != nil {
 		return err
 	}
@@ -84,7 +87,8 @@ func (f *FollowService) Unfollow(fid uint64) error {
 	return errors.New("Error unfollowing user")
 }
 
-func (f *FollowService) getFollows(path string, fid uint64, limit int, cursor string) ([]users.User, string, error) {
+func (f *FollowService) getFollows(path string, fid uint64, limit int,
+	cursor string) ([]users.User, string, error) {
 	type FollowersResponse struct {
 		Result struct {
 			Users []users.User `json:"users"`
@@ -119,11 +123,13 @@ func (f *FollowService) getFollows(path string, fid uint64, limit int, cursor st
 	return nil, "", errors.New("Error getting follows")
 }
 
-func (f *FollowService) GetFollowersByFid(fid uint64, limit int, cursor string) ([]users.User, string, error) {
+func (f *FollowService) GetFollowersByFid(fid uint64, limit int,
+	cursor string) ([]users.User, string, error) {
 	return f.getFollows("/v2/followers", fid, limit, cursor)
 }
 
-func (f *FollowService) GetFollowersByFname(fname string, limit int, cursor string) ([]users.User, string, error) {
+func (f *FollowService) GetFollowersByFname(fname string, limit int,
+	cursor string) ([]users.User, string, error) {
 	if f.registry == nil {
 		return nil, "", errors.New("Registry service is not initialized. Use GetFollowersByFid.")
 	}
@@ -134,11 +140,13 @@ func (f *FollowService) GetFollowersByFname(fname string, limit int, cursor stri
 	return f.getFollows("/v2/followers", fid, limit, cursor)
 }
 
-func (f *FollowService) GetFollowingByFid(fid uint64, limit int, cursor string) ([]users.User, string, error) {
+func (f *FollowService) GetFollowingByFid(fid uint64, limit int,
+	cursor string) ([]users.User, string, error) {
 	return f.getFollows("/v2/following", fid, limit, cursor)
 }
 
-func (f *FollowService) GetFollowingByFname(fname string, limit int, cursor string) ([]users.User, string, error) {
+func (f *FollowService) GetFollowingByFname(fname string, limit int,
+	cursor string) ([]users.User, string, error) {
 	if f.registry == nil {
 		return nil, "", errors.New("Registry service is not initialized. Use GetFollowingByFid.")
 	}

@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"errors"
 
-	"github.com/ertan/go-farcaster/pkg/account"
-	"github.com/ertan/go-farcaster/pkg/registry"
+	"github.com/mleku/go-farcaster/pkg/account"
+	"github.com/mleku/go-farcaster/pkg/registry"
 )
 
 type UserService struct {
@@ -45,7 +45,8 @@ type ViewerContext struct {
 	CanSendDirectCast bool `json:"canSendDirectCast"`
 }
 
-func NewUserService(account *account.AccountService, registry *registry.RegistryService) *UserService {
+func NewUserService(account *account.AccountService,
+	registry *registry.RegistryService) *UserService {
 	return &UserService{
 		account:  account,
 		registry: registry,
@@ -59,7 +60,8 @@ type UserResponse struct {
 	} `json:"errors"`
 }
 
-func (s *UserService) getUser(path string, params map[string]interface{}) (*User, error) {
+func (s *UserService) getUser(path string,
+	params map[string]interface{}) (*User, error) {
 	responseBytes, err := s.account.SendRequest("GET", path, params, nil)
 	if err != nil {
 		return nil, err
@@ -80,7 +82,8 @@ func (u *UserService) GetUserByFid(fid uint64) (*User, error) {
 }
 
 func (u *UserService) GetUserByUsername(username string) (*User, error) {
-	return u.getUser("/v2/user-by-username", map[string]interface{}{"username": username})
+	return u.getUser("/v2/user-by-username",
+		map[string]interface{}{"username": username})
 }
 
 func (u *UserService) GetUserByAddress(address string) (*User, error) {
@@ -94,8 +97,10 @@ func (u *UserService) GetUserByAddress(address string) (*User, error) {
 	return u.GetUserByFid(fid)
 }
 
-func (u *UserService) getCustodyAddress(params map[string]interface{}) (string, error) {
-	responseBytes, err := u.account.SendRequest("GET", "/v2/custody-address", params, nil)
+func (u *UserService) getCustodyAddress(params map[string]interface{}) (string,
+	error) {
+	responseBytes, err := u.account.SendRequest("GET", "/v2/custody-address",
+		params, nil)
 	if err != nil {
 		return "", err
 	}
@@ -121,7 +126,8 @@ func (u *UserService) GetCustodyAddressByFid(fid uint64) (string, error) {
 	return u.getCustodyAddress(map[string]interface{}{"fid": fid})
 }
 
-func (u *UserService) GetCustodyAddressByUsername(username string) (string, error) {
+func (u *UserService) GetCustodyAddressByUsername(username string) (string,
+	error) {
 	return u.getCustodyAddress(map[string]interface{}{"fname": username})
 }
 
@@ -129,7 +135,8 @@ func (u *UserService) Me() (*User, error) {
 	return u.getUser("/v2/me", nil)
 }
 
-func (u *UserService) GetRecentUsers(limit int, cursor string) ([]User, string, error) {
+func (u *UserService) GetRecentUsers(limit int, cursor string) ([]User, string,
+	error) {
 	params := map[string]interface{}{}
 	if limit > 0 {
 		params["limit"] = limit
@@ -137,7 +144,8 @@ func (u *UserService) GetRecentUsers(limit int, cursor string) ([]User, string, 
 	if cursor != "" {
 		params["cursor"] = cursor
 	}
-	responseBytes, err := u.account.SendRequest("GET", "/v2/recent-users", params, nil)
+	responseBytes, err := u.account.SendRequest("GET", "/v2/recent-users",
+		params, nil)
 	if err != nil {
 		return nil, "", err
 	}

@@ -1,16 +1,16 @@
 package farcaster
 
 import (
-	"github.com/ertan/go-farcaster/pkg/account"
-	"github.com/ertan/go-farcaster/pkg/assets"
-	"github.com/ertan/go-farcaster/pkg/casts"
-	"github.com/ertan/go-farcaster/pkg/follows"
-	"github.com/ertan/go-farcaster/pkg/health"
-	"github.com/ertan/go-farcaster/pkg/notifications"
-	"github.com/ertan/go-farcaster/pkg/reactions"
-	"github.com/ertan/go-farcaster/pkg/registry"
-	"github.com/ertan/go-farcaster/pkg/users"
-	"github.com/ertan/go-farcaster/pkg/verifications"
+	"github.com/mleku/go-farcaster/pkg/account"
+	"github.com/mleku/go-farcaster/pkg/assets"
+	"github.com/mleku/go-farcaster/pkg/casts"
+	"github.com/mleku/go-farcaster/pkg/follows"
+	"github.com/mleku/go-farcaster/pkg/health"
+	"github.com/mleku/go-farcaster/pkg/notifications"
+	"github.com/mleku/go-farcaster/pkg/reactions"
+	"github.com/mleku/go-farcaster/pkg/registry"
+	"github.com/mleku/go-farcaster/pkg/users"
+	"github.com/mleku/go-farcaster/pkg/verifications"
 )
 
 type FarcasterClient struct {

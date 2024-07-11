@@ -3,7 +3,7 @@ package main
 import (
 	"encoding/json"
 
-	farcaster "github.com/ertan/go-farcaster/pkg"
+	farcaster "github.com/mleku/go-farcaster/pkg"
 	"github.com/spf13/viper"
 )
 
@@ -24,12 +24,14 @@ func main() {
 	farcaster := farcaster.NewFarcasterClient(apiUrl, mnemonic, providerWs)
 	println("Farcaster client created")
 
-	reactions, _, err := farcaster.Reactions.GetReactionsByCastHash("0x8b20fdcbf77255770400da9a50a9c31ba151337fee7ab19a6d337b6da7744769", 0, "")
+	reactions, _, err := farcaster.Reactions.GetReactionsByCastHash("0x8b20fdcbf77255770400da9a50a9c31ba151337fee7ab19a6d337b6da7744769",
+		0, "")
 	if err != nil {
 		panic(err)
 	}
 	prettyPrint(&reactions)
-	users, _, err := farcaster.Reactions.GetRecastersByCastHash("0x321712dc8eccc5d2be38e38c1ef0c8916c49949a80ffe20ec5752bb23ea4d86f", 0, "")
+	users, _, err := farcaster.Reactions.GetRecastersByCastHash("0x321712dc8eccc5d2be38e38c1ef0c8916c49949a80ffe20ec5752bb23ea4d86f",
+		0, "")
 	if err != nil {
 		panic(err)
 	}
